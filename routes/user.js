@@ -94,10 +94,10 @@ router.post('/user/login', async (req, res) => {
 //=========================================================================//
 //Route update user
 router.put("/user/update/:id", async (req, res)=>{
-	const userToModify = await User.findById(req.params.id);
+	//const userToModify = await User.findById(req.params.id);
 	try{
 	  // Vérifier que l'utilisateur existe
-	  //const userToModify = await User.findById(req.params.id);
+	  const userToModify = await User.findOneAndUpdate(req.params.id);
 	  console.log(userToModify);
 	  // Modifier les valeurs de l'utilisateur
 	  // Si l'utilisateur est trouvé, on peut effectué les modifications
@@ -147,7 +147,7 @@ router.put("/user/update/:id", async (req, res)=>{
   //====================================================================//
   // Route permettant de supprimer son compte en tant qu'utilisateur
   router.delete("/user/deleteAccount/:id", async (req,res)=>{
-	 await User.findByIdAndDelete(req.params.id);
+	 await User.findOneAndDelete(req.params.id);
 	 res.json({ message: "account deleted"});
   })
 //Export du router
