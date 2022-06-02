@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-//Modèle user
+//Modèle artist
 const Artist = mongoose.model("Artist", {
   account: {
     artistName: {
@@ -19,5 +19,6 @@ const Artist = mongoose.model("Artist", {
   salt: String,
   avatar: { Object },
 });
+
 
 module.exports = Artist;

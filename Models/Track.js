@@ -10,7 +10,6 @@ const Track = mongoose.model("Track", {
     default: {},
     required: true,
   },
-  track_duration: Number,
   listenerCount: Number,
   track_like: {
     Number,
