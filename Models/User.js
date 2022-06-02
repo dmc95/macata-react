@@ -11,6 +11,7 @@ const User = mongoose.model('User', {
 	},
 	email: {
 		unique: true,
+		required: true,
 		type: String,
 	},
 	token: String,
