@@ -38,5 +38,5 @@ app.all('*', (req, res) => {
 });
 
 app.listen(3002, () => {
-	console.log('fire starter');
+	console.log('server started');
 });
