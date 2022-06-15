@@ -6,9 +6,9 @@ const isArtist = async (req, res, next) => {
     if (req.headers.authorization) {
       const token = req.headers.authorization.replace("Bearer ", "");
       //console.log(token);
-      //Si le token existe, on cherche le artist dans la BDD
-      const artist = await Artist.findOne({ token: token }).select("account _id email");
-      console.log(artist);
+      //Si le token existe, on cherche l'artist dans la BDD
+      const artist = await Artist.findOne({ token: token }).select("account id email");
+      
       if (artist) {
         //Ajout d'une clé artist à l'objet req contenant les infos de artist
         req.artist = artist;

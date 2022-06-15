@@ -29,7 +29,7 @@ const Track = mongoose.model("Track", {
     type: mongoose.Schema.Types.Mixed,
     default: {},
   },
-  owner: {
+  author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Artist",
   },

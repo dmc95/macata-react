@@ -11,10 +11,12 @@ app.use(formidable());
 //Import des routes
 const userRoutes = require('./routes/user');
 const artistRoutes = require('./routes/artist');
-
+const trackRoutes = require('./routes/track')
 //utilisation des routes
 app.use(userRoutes);
 app.use(artistRoutes);
+app.use(trackRoutes);
+
 
 //connection à la Bdd
 mongoose.connect("mongodb://localhost/macata", {

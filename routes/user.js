@@ -13,6 +13,8 @@ const cloudinary = require("cloudinary").v2;
 
 //import des models
 const User = require("../Models/User");
+const Artist = require("../Models/Artist");
+const isAuthenticated = require("../middlewares/isAuthenticated");
 
 //======================================================//
 //Route signup user
@@ -31,7 +33,7 @@ router.post("/user/signup", async (req, res) => {
         const salt = uid2(16);
         const hash = SHA256(password + salt).toString(encBase64);
         //Génération du token
-        const token = uid2(16);
+        const token = uid2(64);
         //Créer un nouvel utilisateur
         const newUser = new User({
           account: {
@@ -93,23 +95,24 @@ router.post("/user/login", async (req, res) => {
 
 //=========================================================================//
 //Route update user
-router.put("/user/update/:id", async (req, res) => {
+router.put("/user/update", isAuthenticated, async (req, res) => {
   //const userToModify = await User.findById(req.params.id);
   try {
     // Vérifier que l'utilisateur existe
-    const userToModify = await User.findOneAndUpdate(req.params.id);
+    const userToModify = await User.findByIdAndUpdate(req.query.id);
+    const { username, password } = req.fields;
     console.log(userToModify);
     // Modifier les valeurs de l'utilisateur
     // Si l'utilisateur est trouvé, on peut effectué les modifications
     if (userToModify) {
-      if (req.fields.username) {
-        userToModify.account.username = req.fields.username;
+      if (username) {
+        userToModify.account.username = username;
       } else {
         return res.json({ message: "username not modify" });
       }
-      if (req.fields.password) {
+      if (password) {
         const salt = uid2(16);
-        const hash = SHA256(req.fields.password + salt).toString(encBase64);
+        const hash = SHA256(password + salt).toString(encBase64);
         userToModify.salt = salt;
         userToModify.hash = hash;
       } else {
@@ -129,7 +132,7 @@ router.put("/user/update/:id", async (req, res) => {
 
 //===================================================================//
 // Route permettant d'afficher un utilisateur
-router.get("/user/account", async (req, res) => {
+router.get("/user/account",isAuthenticated, async (req, res) => {
   const accountById = await User.findById(req.query.id);
   try {
     if (accountById) {
@@ -145,13 +148,12 @@ router.get("/user/account", async (req, res) => {
 
 //====================================================================//
 // Route permettant de supprimer son compte en tant qu'utilisateur
-router.delete("/user/deleteAccount/:id", async (req, res) => {
-  const accountDeleted = await User.findOneAndDelete(req.params.id);
+router.delete("/user/deleteAccount",isAuthenticated, async (req, res) => {
+  const accountDeleted = await User.findById(req.query.id);
 
   try {
-    if (accountDeleted) {
-      res.json(accountDeleted);
-    }
+    //res.json(accountDeleted);
+    await accountDeleted.delete();
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
